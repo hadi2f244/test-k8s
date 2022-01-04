@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config 
+data:
+  MYSQL_DATABASE: "test"
+  APP_PORT: "8080"
+  MY_NAME: "hadi"
+  MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+  MYSQL_RANDOM_ROOT_PASSWORD: "false"
+
