@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx
+  labels:
+    app.kubernetes.io/name: nginx
+#    app.kubernetes.io/version: !!str 1.11
+    app.kubernetes.io/env: test
+spec:
+  replicas: 6
+  selector: 
+    matchLabels:  
+      app.kubernetes.io/name: nginx
+#      app.kubernetes.io/version: !!str 1.11
+      app.kubernetes.io/env: test
+  template: 
+    metadata:
+      labels:      
+        app.kubernetes.io/name: nginx
+#        app.kubernetes.io/version: !!str 1.11
+        app.kubernetes.io/env: test
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
