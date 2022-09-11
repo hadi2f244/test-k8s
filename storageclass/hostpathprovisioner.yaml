@@ -1,0 +1,18 @@
+apiVersion: hostpathprovisioner.kubevirt.io/v1beta1
+kind: HostPathProvisioner
+metadata:
+  name: hostpath-provisioner
+spec:
+  imagePullPolicy: Always
+  storagePools:
+    - name: "local"
+      pvcTemplate:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+      path: "/var/hpvolumes"
+  workload:
+    nodeSelector:
+      kubernetes.io/os: linux

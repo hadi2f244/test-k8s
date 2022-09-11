@@ -96,13 +96,13 @@ spec:
     spec:
       containers:
       - name: nginx-2
-        image: nginx:1.14.2-alpine
+        image: nginx:1.14.2
         ports:
         - containerPort: 80
         volumeMounts:
         - name: nginx-conf-2
-          mountPath: /etc/nginx/nginx.conf
-          subPath: nginx.conf
+          mountPath: /etc/nginx/
+            #subPath: nginx.conf
           readOnly: true
       volumes:
         - name: nginx-conf-2

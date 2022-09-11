@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+    test: test1
+  annotations:
+    key1: val1
+    key2: |
+      value 2
+      value 3
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: content
+          mountPath: /usr/share/nginx/html/test
+        - name: downward
+          mountPath: /etc/downward
+        resources:
+          requests:
+            cpu: 15m
+      volumes:
+      - name: content
+        emptyDir:
+          medium: Memory
+          sizeLimit: 10Mi
+      - name: downward
+        downwardAPI:
+          items:
+            - path: "podName"
+              fieldRef:
+                fieldPath: metadata.name
+            - path: "podNamespace"
+              fieldRef:
+                fieldPath: metadata.namespace
+            - path: "labels"
+              fieldRef:
+                fieldPath: metadata.labels
+            - path: "annotations"
+              fieldRef:
+                fieldPath: metadata.annotations
+            - path: "containerCpuRequestMilliCores"
+              resourceFieldRef:
+                containerName: nginx
+                resource: requests.cpu
+                divisor: 1m 

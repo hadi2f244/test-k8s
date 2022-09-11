@@ -5,7 +5,14 @@ metadata:
   labels:
     app: nginx
 spec:
-  replicas: 5
+  minReadySeconds: 5
+  revisionHistoryLimit: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+    type: RollingUpdate
+  replicas: 15
   selector:
     matchLabels:
       app: nginx
@@ -19,3 +26,8 @@ spec:
         image: nginx:1.14.2-alpine
         ports:
         - containerPort: 80
+        readinessProbe:
+          periodSeconds: 1
+          httpGet:
+            path: /
+            port: 8080
