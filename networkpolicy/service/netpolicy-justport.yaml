@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-netpolicy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: nginx-default
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: dnsutils
+      ports:
+        - port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dev-netpolicy
+  namespace: dev
+spec:
+  podSelector:
+    matchLabels:
+      app: nginx-dev
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: dnsutils
+      ports:
+        - port: 80
