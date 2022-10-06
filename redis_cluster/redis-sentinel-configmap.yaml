@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-sentinel-configuration
+  namespace: redis
+  labels:
+    app: redis-sentinel
+data:
+  sentinel.conf: |
+    # sentinel config
+    sentinel resolve-hostnames yes
+    port 26379
+    sentinel monitor redis-ss-0 redis-ss-0.redis-service.redis.svc.cluster.local 6379 2
+    sentinel down-after-milliseconds redis-ss-0 5000

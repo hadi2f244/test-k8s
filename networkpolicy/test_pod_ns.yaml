@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils-0
+  namespace: default
+spec:
+  containers:
+  - name: dnsutils-0
+    image: tutum/dnsutils
+    command:
+      - /bin/sh
+      - -c
+      - sleep 10000000
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils-1
+  namespace: dev
+spec:
+  containers:
+  - name: dnsutils-1
+    image: tutum/dnsutils
+    command:
+      - /bin/sh
+      - -c 
+      - sleep 10000000
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dnsutils-2
+  namespace: dev
+spec:
+  containers:
+  - name: dnsutils-2
+    image: tutum/dnsutils
+    command:
+      - /bin/sh
+      - -c 
+      - sleep 10000000
+

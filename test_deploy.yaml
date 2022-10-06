@@ -12,7 +12,7 @@ spec:
       maxSurge: 3
       maxUnavailable: 0
     type: RollingUpdate
-  replicas: 15
+  replicas: 5
   selector:
     matchLabels:
       app: nginx
@@ -25,9 +25,9 @@ spec:
       - name: nginx
         image: nginx:1.14.2-alpine
         ports:
-        - containerPort: 80
-        readinessProbe:
-          periodSeconds: 1
-          httpGet:
-            path: /
-            port: 8080
+          - containerPort: 80
+          #    readinessProbe:
+          #      periodSeconds: 1
+          #      httpGet:
+          #        path: /
+          #        port: 8080
