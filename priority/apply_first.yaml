@@ -1,0 +1,65 @@
+# We should provide situation that a pod can't be schedule on a node. For this, I used resourceQuota restriction.
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+---
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: cpu-restriction
+  namespace: dev
+spec:
+  hard:
+    requests.cpu: 150m # Force to just run one pod
+    limits.cpu: 500m
+---
+
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+preemptionPolicy: PreemptLowerPriority
+value: 2000
+globalDefault: false
+description: High Priority Class.
+
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: low-priority
+preemptionPolicy: PreemptLowerPriority
+value: 1000
+globalDefault: false
+description: Low Priority Class.
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lowpriority-nginx-deployment
+  namespace: dev
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      priorityClassName: low-priority
+      containers:
+      - name: nginx
+        image: nginx:1.14.2-alpine
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            cpu: 200m
