@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: debug-deployment
+  labels:
+    app: debug
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: debug
+  template:
+    metadata:
+      labels:
+        app: debug
+    spec:
+      nodeSelector:
+          kubernetes.io/hostname: nodepool-00455573
+      volumes:
+        - name: host-volume
+          hostPath:
+            path: /
+            type: Directory
+      containers:
+      - name: debug
+        image: tutum/dnsutils
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "sleep 1000000000;" ]
+        volumeMounts:
+         - name: host-volume
+           mountPath: /tmp/host
