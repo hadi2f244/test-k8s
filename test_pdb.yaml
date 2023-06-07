@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-1
+  labels:
+    app: nginx-1
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: nginx-1
+  template:
+    metadata:
+      labels:
+        app: nginx-1
+    spec:
+      containers:
+      - name: nginx-1
+        image: nginx:1.14.2-alpine
+        ports:
+        - containerPort: 80
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  app: nginx-1
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: nginx-1
+
